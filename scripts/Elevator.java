@@ -96,4 +96,40 @@ public abstract class Elevator {
         return onElevator;
     }
 
+    public String emergency(){
+        return "Emergency has been called";
+    }
+
+    public String getDirection(){
+        int numGoingUp = 0;
+        int numGoingDown = 0;
+        int closestUp = MAX_FLOORS;
+        int closestDown = MAX_FLOORS;
+        for (int i = 0; i < onElevator.size(); i++){
+            if (getCurrentFloor() > onElevator.get(i).getFloor()){
+                numGoingDown++;
+                if (getCurrentFloor() - onElevator.get(i).getFloor() < closestDown){
+                    closestDown = getCurrentFloor() - onElevator.get(i).getFloor();
+                }
+            }
+            else if (getCurrentFloor() < onElevator.get(i).getFloor()){
+                numGoingUp++;
+                if (onElevator.get(i).getFloor() - getCurrentFloor() < closestUp){
+                    closestUp = onElevator.get(i).getFloor() - getCurrentFloor();
+                }
+            }
+        }
+        if (numGoingDown == numGoingUp){
+            if (closestUp < closestDown){
+                return "Up";
+            }
+            else {
+                return "Down";
+            }
+        }
+        else if (numGoingDown > numGoingUp){
+            return "Down";
+        }
+        return "Up";
+    }
 }
