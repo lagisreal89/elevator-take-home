@@ -1,6 +1,6 @@
 package scripts;
 
-public class main {
+public class Main {
     public static void main(String[] args){
         Person a = new Person(150, 60, 3);
     }
