@@ -1,5 +1,6 @@
 package scripts;
 
+// object created to be on elevator if it meets specifications
 public abstract class Load {
     private double height;
     private double weight;

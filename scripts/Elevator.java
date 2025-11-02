@@ -7,8 +7,8 @@ public abstract class Elevator {
     private final double MAX_HEIGHT; // height of elevator
     private final int MAX_FLOORS; // max floors in an elevator
     public int currentFloor;  // current floor
-    public double width;
-    public double length;
+    public final double width;
+    public final double length;
     private List<Load> onElevator = new ArrayList<>(); // Assume that the elevator holds people 
     public boolean elevatorOpened = false;
     public Elevator (int maxFloors, double maxCapacity, double height, int floor, double width, double length){
@@ -29,45 +29,22 @@ public abstract class Elevator {
         this.length = length;
         this.currentCapacity = currentCapacity;
     }
-    public boolean personEnterElevator(Person p){
-        double potentialWeight = this.currentCapacity + p.getWeight();
-        if ((MAX_CAPACITY < potentialWeight || MAX_HEIGHT < p.getHeight()) && this.elevatorOpened){
+    
+    public boolean enterElevator(Load object){
+        if (!elevatorOpened){
             return false;
         }
-        onElevator.add(p);
-        currentCapacity += p.getWeight();
-        return true;
-    }
-
-    public boolean personEnterElevator(double height, double weight, int floor){
-        Person p = new Person(height, weight, floor);
-        double potentialWeight = this.currentCapacity + p.getWeight();
-        if (MAX_CAPACITY < potentialWeight || MAX_HEIGHT < p.getHeight()){
+        double potentialWeight = currentCapacity + object.getWeight();
+        if (potentialWeight > MAX_CAPACITY || object.getHeight() > MAX_HEIGHT){
             return false;
         }
-        onElevator.add(p);
-        currentCapacity += p.getWeight();
-        return true;
-    }
-
-    public boolean itemEnterElevator(Item s){
-        double potentialWeight = this.currentCapacity + s.getWeight();
-        if ((MAX_CAPACITY < potentialWeight || MAX_HEIGHT < s.getHeight() || MAX_HEIGHT < s.getLength() || this.width < s.getWidth()) && this.elevatorOpened){
-            return false;
+        if (object instanceof Item item){
+            if ((item.getLength() > MAX_HEIGHT && item.getLength() > this.length) || item.getWidth() > this.width){
+                return false;
+            }
         }
-        onElevator.add(s);
-        currentCapacity += s.getWeight();
-        return true;
-    }
-
-    public boolean itemEnterElevator(int weight, int height, int length, int width, int floor){
-        Item item = new Item(weight, height, length, width, floor);
-        double potentialWeight = this.currentCapacity + item.getWeight();
-        if ((MAX_CAPACITY < potentialWeight || MAX_HEIGHT < item.getHeight() || MAX_HEIGHT < item.getLength()) && this.elevatorOpened){
-            return false;
-        }
-        onElevator.add(item);
-        currentCapacity += item.getWeight();
+        onElevator.add(object);
+        currentCapacity += object.getWeight();
         return true;
     }
 
@@ -92,14 +69,16 @@ public abstract class Elevator {
         if (this.currentFloor == this.MAX_FLOORS){
             return currentFloor;
         }
-        return this.currentFloor++;
+        currentFloor++;
+        return currentFloor;
     }
 
     public int downElevator(){
         if (this.currentFloor == 0){
             return 0;
         }
-        return this.currentFloor--;
+        currentFloor--;
+        return currentFloor;
     }
 
     public void closeElevator(){
