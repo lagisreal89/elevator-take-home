@@ -110,8 +110,8 @@ public abstract class Elevator {
         this.elevatorOpened = true;
     }
 
-    public List<Load> getThingsOnElevator() {
-        return this.onElevator;
+    public List<Load> getOnElevator() {
+        return onElevator;
     }
 
 }
