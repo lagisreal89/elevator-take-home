@@ -9,7 +9,7 @@ public abstract class Elevator {
     public int currentFloor;  // current floor
     public final double width;
     public final double length;
-    private List<Load> onElevator = new ArrayList<>(); // Assume that the elevator holds people 
+    private List<Load> onElevator = new ArrayList<>(); // Assume that the elevator holds people and items 
     public boolean elevatorOpened = false;
     public Elevator (int maxFloors, double maxCapacity, double height, int floor, double width, double length){
         this.MAX_FLOORS = maxFloors;
@@ -30,6 +30,7 @@ public abstract class Elevator {
         this.currentCapacity = currentCapacity;
     }
     
+    // object enters elevator if they meet elevator size requirements 
     public boolean enterElevator(Load object){
         if (!elevatorOpened){
             return false;
@@ -48,6 +49,7 @@ public abstract class Elevator {
         return true;
     }
 
+    // object exits elevator when exit floor is reached
     public void exitElevator(){
         int i = 0;
         while (i < onElevator.size() && this.elevatorOpened){
@@ -89,6 +91,7 @@ public abstract class Elevator {
         this.elevatorOpened = true;
     }
 
+    // returns the objects in the elevator
     public List<Load> getOnElevator() {
         return onElevator;
     }
